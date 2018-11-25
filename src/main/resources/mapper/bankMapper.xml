@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.bank.dao.BankDao">
+    <resultMap id="bankMap" type="com.cn.bank.model.Bank">
+        <result column="id" property="id"/>
+        <result column="bank_name" property="bankName"/>
+        <result column="bank_id" property="bankId"/>
+        <result column="bank_address" property="bankAddress"/>
+        <result column="bank_longitude" property="bankLongitude"/>
+        <result column="bank_latitude" property="bankLatitude"/>
+    </resultMap>
+    <select id="queryBankInfos" resultMap="bankMap">
+        SELECT * FROM bank_info;
+    </select>
+    <insert id="addBankInfo" useGeneratedKeys="true" keyProperty="id" parameterType="com.cn.bank.model.Bank">
+      insert into bank_info(bank_name,bank_id,bank_address,bank_longitude,bank_latitude)
+      values(#{bankName},#{bankId},#{bankAddress},#{bankLongitude},#{bankLatitude})
+    </insert>
+    <update id="editBankInfo" parameterType="com.cn.bank.model.UpdateBankInfo">
+      update bank_info set ${filed}=#{value} where id=#{id}
+    </update>
+    <update id="updateBankInfo" parameterType="com.cn.bank.model.Bank">
+      update bank_info set bank_longitude=#{bankLongitude},bank_latitude=#{bankLatitude} where id=#{id}
+    </update>
+    <delete id="delBankInfo" parameterType="com.cn.bank.model.UpdateBankInfo">
+        delete from bank_info where id=#{id}
+    </delete>
+</mapper>

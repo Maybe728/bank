@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="keywords" content="银行" />
+		<title>银行信息</title>
+		<style type="text/css">
+			body,
+			html {
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				font-family: "Microsoft YaHei"
+			}
+
+			#mapDiv {
+				width: 100%;
+				height: 100%
+			}
+			input,
+			b,
+			p {
+				margin-left: 5px;
+				font-size: 14px
+			}
+		</style>
+		<link rel="stylesheet" href="layui/css/layui.css">
+		<script src="layui/layui.js"></script>
+		<script src="jquery-3.3.1.min.js"></script>
+		<script type="text/javascript" src="http://api.tianditu.gov.cn/api?v=4.0&tk=c359a97e9e642335f328599aa9f63fe5"></script>
+		<script>
+			var map;
+			var zoom = 11;
+			var geocoder;
+			var id=0;
+			var icon1 = new T.Icon({
+                iconUrl: "img/maker3.png",
+                iconSize: new T.Point(29, 37),
+                iconAnchor: new T.Point(30, 25)
+			});
+			function onLoad(){ 
+				//初始化地图对象
+				map=new T.Map("mapDiv");
+				//设置显示地图的中心点和级别 
+				map.centerAndZoom(new T.LngLat(119.90, 31.02),zoom);
+				//创建对象 
+				geocoder = new T.Geocoder();
+				//新建右键菜单添加行社
+				var Menu = new T.ContextMenu({
+						width: 80
+					});
+				var add_MenuItem = new T.MenuItem("添加行社", addBank);
+                var edit_MenuItem = new T.MenuItem("修改行社", showBankInfos);
+				Menu.addItem(add_MenuItem);
+                Menu.addItem(edit_MenuItem);
+				map.addContextMenu(Menu);
+				//获取以记录的银行地址,添加标注,并且给标注注册点击事件
+				$.ajax({
+					url:"/getBankInfos",
+					type:"GET",
+					success:function (data) {
+						console.log(data.data);
+						var obj = data.data;
+						var len = obj.length;
+                        for (var i = 0; i < len; i++) {
+							geocoder.getPoint(obj[i]["bankAddress"], searchResult);
+                        }
+                    },
+					error:function (data) {
+						layer.msg("获取银行信息失败！");
+                    }
+				})
+                
+			}
+			function showBankInfos(){
+                layer.open({
+                  type: 2,
+                  title: '行社修改删除界面',
+                  shadeClose: true,
+                  shade: 0.8,
+                  area: ['705px', '500px'],
+                  content: 'editbank.html ' //iframe的url
+                });
+			}
+			function addBank(){
+				var htmlStr = '<div style="margin-top: 20px;"><div class="layui-form-item"><div class="layui-inline" ><label class="layui-form-label">银行名称</label>'
+							+ '<div class="layui-input-block"><input type="text" id="bankName" name="bankName" lay-verify="title" autocomplete="off" placeholder="请输入银行名称..." class="layui-input">'
+							+ '</div></div></div><div class="layui-form-item"><div class="layui-inline" ><label class="layui-form-label">机构号</label>'
+							+ '<div class="layui-input-block"><input type="text" id="bankId" name="bankId"'
+							+ ' lay-verify="required" placeholder="请输入机构号..." autocomplete="off" class="layui-input"></div></div></div>'
+							+ '<div class="layui-form-item"><div class="layui-inline" ><label class="layui-form-label">银行地址</label>'
+							+ '<div class="layui-input-block"><input type="text" id="address" name="address"'
+							+ ' lay-verify="required" placeholder="请输入银行地址..." autocomplete="off" class="layui-input"></div></div></div>'
+							+'</div>';
+				layer.open({
+				  type: 1,
+				  skin: 'layui-layer-molv', //样式类名
+				  title: ['添加行社', 'font-size:18px;'],
+				  closeBtn: 0, //不显示关闭按钮
+				  anim: 4,
+				  shadeClose: true, //开启遮罩关闭
+				  area: ['350px', '320px'],
+				  btn: ['添加', '取消'],
+				  yes: function(index, layero){
+					var address = document.getElementById("address").value;
+					var bankName = document.getElementById("bankName").value;
+					var bankId = document.getElementById("bankId").value;
+					var params={};
+					params.bankName=bankName;
+					params.bankId=bankId;
+					params.bankAddress=address;
+					$.ajax({
+						url:"/addBankInfo",
+                        contentType:'application/json; charset=UTF-8',
+                        dataType: 'json',
+						type:"Post",
+						data:JSON.stringify(params),
+						success:function (data) {
+						    console.log(data);
+						    id = data.code;
+                            geocoder.getPoint(address, searchResult);
+                            layer.msg('添加成功', {icon: 1});
+                            layer.close(index);
+						},
+						error:function (data) {
+							layer.msg("添加银行信息失败！");
+						}
+					})
+				  },
+				  btn2: function(index, layero){
+					layer.close(index);
+				  },
+				  content: htmlStr
+				});
+			}
+			function searchResult(result){
+				console.log(result.getLocationPoint());
+
+                if(result.getStatus() == 0){
+                    if (id!=0){
+                        var params={};
+                        params.id=id;
+                        params.bankLongitude = result.getLocationPoint().lng;
+                        params.bankLatitude = result.getLocationPoint().lat;
+						console.log(params);
+                        $.ajax({
+                            url:"/updateBankInfo",
+                            contentType:'application/json; charset=UTF-8',
+                            dataType: 'json',
+                            type:"Post",
+                            data:JSON.stringify(params),
+                            success:function (data) {
+                            },
+                            error:function (data) {
+                                layer.msg("系统异常！");
+                            }
+                        })
+					}
+
+				    //更新银行经纬度
+					map.panTo(result.getLocationPoint(), zoom);
+					//创建标注对象
+					var marker = new T.Marker(result.getLocationPoint(), {icon: icon1});
+					//向地图上添加标注
+					map.addOverLay(marker);
+                    //给标注注册点击事件(先remove防止多次注册)
+                    marker.removeEventListener("click", MarkerClick);
+                    marker.addEventListener("click", MarkerClick);
+				}else{
+					layer.msg('该地址不存在', {icon: 5});
+				}
+			}
+            function MarkerClick(e) {
+                var p = e.target;
+                console.log(p);
+                alert("marker的位置是" + p.getLngLat().lng + "," + p.getLngLat().lat);
+                layer.open({
+                    type: 2,
+                    title: '员工信息',
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['750px', '500px'],
+                    content: 'editemployee.html' //iframe的url
+                })
+            }
+			layui.use(['form', 'layedit'], function(){
+			  var form = layui.form
+			  ,layer = layui.layer
+			  ,layedit = layui.layedit
+			});
+	</script>
+	</head>
+	<body onLoad="onLoad()">
+		<div id="mapDiv">
+		</div>
+	</body>
+</html>
