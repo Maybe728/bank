@@ -15,10 +15,10 @@
         <result column="employee_speciality" property="specialty"/>
         <result column="employee_income" property="inCome"/>
     </resultMap>
-    <select id="queryEmployeeInfos" resultMap="employeeMap">
-        SELECT * FROM employee_info;
+    <select id="queryEmployeeInfos" parameterType="com.cn.bank.model.Bank" resultMap="employeeMap">
+        SELECT * FROM employee_info where bank_id = #{bankId};
     </select>
-    <insert id="addEmployeeInfo" useGeneratedKeys="true" keyProperty="id" parameterType="com.cn.bank.model.Bank">
+    <insert id="addEmployeeInfo" useGeneratedKeys="true" keyProperty="id" parameterType="com.cn.bank.model.Employee">
       insert into employee_info(employee_id,bank_id,employee_name,employee_duties,employee_id_card
                             ,employee_work_date,employee_move_date,employee_work_deadlines,employee_address
                             ,employee_speciality,employee_income)

@@ -13,6 +13,12 @@ public interface BankService {
     List<Bank>  queryBankInfos();
 
     /**
+     * 根据经纬度查询银行信息
+     * @return
+     */
+    List<Bank>  queryBankInfoByLatAndLng(Bank bank);
+
+    /**
      * 添加银行信息
      * @param bank
      * @return

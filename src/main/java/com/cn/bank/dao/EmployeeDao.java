@@ -1,5 +1,6 @@
 package com.cn.bank.dao;
 
+import com.cn.bank.model.Bank;
 import com.cn.bank.model.Employee;
 import com.cn.bank.model.UpdateEmployeeInfo;
 import org.apache.ibatis.annotations.Mapper;
@@ -14,7 +15,7 @@ public interface EmployeeDao {
      * 查询所有员工的信息
      * @return
      */
-    List<Employee> queryEmployeeInfos();
+    List<Employee> queryEmployeeInfos(Bank bank);
 
     /**
      * 添加员工信息

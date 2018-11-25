@@ -12,6 +12,9 @@
     <select id="queryBankInfos" resultMap="bankMap">
         SELECT * FROM bank_info;
     </select>
+    <select id="queryBankInfoByLatAndLng" parameterType="com.cn.bank.model.Bank" resultMap="bankMap">
+        SELECT * FROM bank_info where bank_longitude = #{bankLongitude} and bank_latitude = #{bankLatitude};
+    </select>
     <insert id="addBankInfo" useGeneratedKeys="true" keyProperty="id" parameterType="com.cn.bank.model.Bank">
       insert into bank_info(bank_name,bank_id,bank_address,bank_longitude,bank_latitude)
       values(#{bankName},#{bankId},#{bankAddress},#{bankLongitude},#{bankLatitude})

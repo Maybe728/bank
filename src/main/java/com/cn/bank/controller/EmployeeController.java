@@ -6,10 +6,12 @@ import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class EmployeeController {
@@ -18,11 +20,16 @@ public class EmployeeController {
     EmployeeService employeeService;
 
     @RequestMapping("/getEmployeeInfos")
-    public TempletResult getEmployeeInfos(){
+    public TempletResult getEmployeeInfos(HttpServletRequest request){
+
         TempletResult result = new TempletResult();
+        Map<String,String[]> map = request.getParameterMap();
+        String bankId = map.get("bankId")[0];
+        Bank bank = new Bank();
+        bank.setBankId(bankId);
         List<Employee> employees = new ArrayList<Employee>();
         try{
-            employees = employeeService.queryEmployeeInfos();
+            employees = employeeService.queryEmployeeInfos(bank);
             result.setData(employees);
             result.setCount(employees.size());
             result.setCode(0);
@@ -38,10 +45,10 @@ public class EmployeeController {
     }
 
     @RequestMapping(value="/addEmployeeInfo",method=RequestMethod.POST,produces="application/json; charset=UTF-8")
-    public TempletResult addEmployeeInfo(@RequestBody JSONObject params) throws ParseException {
+    public TempletResult addEmployeeInfo(@RequestBody JSONObject params,HttpServletRequest request) throws ParseException {
         TempletResult result = new TempletResult();
         Employee employee = new Employee();
-
+        employee.setBankId(params.getAsString("bankId"));
         employee.setEmployeeId(params.getAsString("employeeId"));
         employee.setEmployeeName(params.getAsString("employeeName"));
         employee.setIdentity(params.getAsString("identity"));

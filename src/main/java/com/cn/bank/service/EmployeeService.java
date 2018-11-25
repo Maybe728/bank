@@ -12,7 +12,7 @@ public interface EmployeeService {
      * 查询所有的员工信息
      * @return
      */
-    List<Employee>  queryEmployeeInfos();
+    List<Employee>  queryEmployeeInfos(Bank bank);
 
     /**
      * 添加员工信息

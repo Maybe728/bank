@@ -20,6 +20,16 @@ public class BankServiceImpl  implements BankService {
     }
 
     /**
+     * 根据经纬度查询银行信息
+     *
+     * @return
+     */
+    @Override
+    public List<Bank> queryBankInfoByLatAndLng(Bank bank) {
+        return bankDao.queryBankInfoByLatAndLng(bank);
+    }
+
+    /**
      * 添加银行信息
      *
      * @param bank

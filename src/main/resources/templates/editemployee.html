@@ -1,57 +1,95 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>员工信息修改</title>
-		<meta name="renderer" content="webkit">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" type="text/css" href="layui/css/layui.css" />
-		<!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
-	</head>
-	<body>
+<head>
+    <meta charset="utf-8">
+    <title>员工信息修改</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="layui/css/layui.css"/>
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
 
-    <div style="width: 94%;margin-left: 3%;">
-      <table class="layui-hide" id="bank" lay-filter="bank"></table>
+<div style="width: 94%;margin-left: 3%;">
+    <table class="layui-hide" id="bank" lay-filter="bank"></table>
+</div>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
     </div>
-		<script type="text/html" id="toolbarDemo">
-			<div class="layui-btn-container">
-      </div>
-      <button  class="layui-btn"  id="addEmployee">添加员工</button>
-    </script>
+    <button class="layui-btn" id="addEmployee">添加员工</button>
+</script>
 
-		<script type="text/html" id="barDemo">
-			<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    </script>
-		<script type="text/javascript" src="layui/layui.all.js"></script>
-		<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script type="text/javascript" src="layui/layui.all.js"></script>
+<script src="jquery-3.3.1.min.js"></script>
 
-		<script>
-			layui.use(['table','jquery'], function() {
-				var table = layui.table,
-        		$ = layui.$; //重点处
+<script>
+    var bankId = 0;
+    $(document).ready(function () {
+        var str = window.location.href;
+        if (str.indexOf("&")>0){
+            var lng = str.split("?")[1].split("&")[0].split("=")[1];
+            var lat = str.split("?")[1].split("&")[1].split("=")[1];
+            //根据经纬度查询出刚刚点击的是哪个银行
+            var params = {};
+            params.bankLongitude = lng;
+            params.bankLatitude = lat;
+            $.ajax({
+                url: "/queryBankInfoByLatAndLng",
+                contentType: 'application/json; charset=UTF-8',
+                dataType: 'json',
+                type: "Post",
+                data: JSON.stringify(params),
+                success: function (data) {
+                    if (data.data().length>0){
+                        bankId = data.data[0]["bankId"];
+                        showEmployee(bankId);
+                    } else{
+                        layer.msg("暂无数据！");
+                    }
 
-				table.render({
-					elem: '#bank',
-					url: '/getEmployeeInfos',
-					toolbar: '#toolbarDemo',
-          			cellMinWidth: 80,
-					efaultToolbar: ['filter', 'exports'],
-					title: '员工信息',
-					cols: [
-						[{
-							field: 'id',
-							title: 'ID',
-							fixed: 'left',
-							unresize: true,
-							sort: true
-						}, {
-							field: 'employeeId',
-							title: '柜员号',
-							edit: 'text',
-							sort: true
-						}, {
+                },
+                error: function (data) {
+                    layer.msg("系统异常！");
+                }
+            })
+        } else{
+            bankId = str.split("?")[1].split("=")[1];
+            showEmployee(bankId);
+        }
+
+    });
+
+    function showEmployee(bankId) {
+        layui.use(['table', 'jquery'], function () {
+            var table = layui.table,
+                $ = layui.$; //重点处
+
+            table.render({
+                elem: '#bank',
+                url: '/getEmployeeInfos',
+                toolbar: '#toolbarDemo',
+                where: {bankId: bankId},
+                cellMinWidth: 80,
+                efaultToolbar: ['filter', 'exports'],
+                title: '员工信息',
+                cols: [
+                    [{
+                        field: 'id',
+                        title: 'ID',
+                        fixed: 'left',
+                        unresize: true,
+                        sort: true
+                    }, {
+                        field: 'employeeId',
+                        title: '柜员号',
+                        edit: 'text',
+                        sort: true
+                    }, {
 // 							field: 'email',
 // 							title: '邮箱',
 // 							width: 150,
@@ -59,78 +97,89 @@
 // 							templet: function(res) {
 // 								return '<em>' + res.email + '</em>'
 // 							}
-							field: 'bankId',
-							title: '姓名',
-							edit: 'text'
-						}, {
-							field: 'erect',
-							title: '职务',
-							edit: 'text'
-						},{
-							field: 'sdfsdf',
-							title: '身份证',
-              				edit: 'text'
-						}, {
-							field: 'asd',
-							title: '工作时间',
-              				edit: 'text'
-						},  {
-							field: 'ffsd',
-							title: '调入时间',
-              				edit: 'text'
-						}, {
-							field: 'dasd',
-							title: '调出时间',
-              				edit: 'text'
-						}, {
-							field: 'dsad',
-							title: '家庭住址',
-              				edit: 'text'
-						}, {
-							field: 'ads',
-							title: '特长',
-              				edit: 'text'
-						}, {
-							field: 'addasdsadress',
-							title: '年收入',
-              				edit: 'text'
-						},{
-							fixed: 'right',
-							title: '操作',
-							toolbar: '#barDemo'
-						}]
-					],
-					page: true
-				});
-				//监听行工具事件
-				table.on('tool(bank)', function(obj) {
-					var data = obj.data;
-					//console.log(obj)
-					if (obj.event === 'del') {
-						layer.confirm('真的删除行么', function(index) {
-							obj.del();
-							layer.close(index);
-						});
-					} else if (obj.event === 'edit') {
-						layer.prompt({
-							formType: 2,
-							value: data.email
-						}, function(value, index) {
-							obj.update({
-								email: value
-							});
-							layer.close(index);
-						});
-					}
-				});
-        //监听行编辑事件
-        table.on('edit(bank)', function(obj){ //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
-          console.log(obj.value); //得到修改后的值
-          console.log(obj.field); //当前编辑的字段名
-          console.log(obj.data); //所在行的所有相关数据  
-        });
-        
-        $("#addEmployee").click(function(){
+                        field: 'bankId',
+                        title: '机构号',
+                        edit: 'text'
+                    }, {
+// 							field: 'email',
+// 							title: '邮箱',
+// 							width: 150,
+// 							edit: 'text',
+// 							templet: function(res) {
+// 								return '<em>' + res.email + '</em>'
+// 							}
+                        field: 'emloyeeName',
+                        title: '员工名称',
+                        edit: 'text'
+                    }, {
+                        field: 'role',
+                        title: '职务',
+                        edit: 'text'
+                    }, {
+                        field: 'identity',
+                        title: '身份证',
+                        edit: 'text'
+                    }, {
+                        field: 'workDate',
+                        title: '工作时间',
+                        edit: 'text'
+                    }, {
+                        field: 'inDate',
+                        title: '调入时间',
+                        edit: 'text'
+                    }, {
+                        field: 'outDate',
+                        title: '调出时间',
+                        edit: 'text'
+                    }, {
+                        field: 'address',
+                        title: '家庭住址',
+                        edit: 'text'
+                    }, {
+                        field: 'inDate',
+                        title: '特长',
+                        edit: 'text'
+                    }, {
+                        field: 'inCome',
+                        title: '年收入',
+                        edit: 'text'
+                    }, {
+                        fixed: 'right',
+                        title: '操作',
+                        toolbar: '#barDemo'
+                    }]
+                ],
+                page: true
+            });
+            //监听行工具事件
+            table.on('tool(bank)', function (obj) {
+                var data = obj.data;
+                //console.log(obj)
+                if (obj.event === 'del') {
+                    layer.confirm('真的删除行么', function (index) {
+                        obj.del();
+                        layer.close(index);
+                    });
+                } else if (obj.event === 'edit') {
+                    layer.prompt({
+                        formType: 2,
+                        value: data.email
+                    }, function (value, index) {
+                        obj.update({
+                            email: value
+                        });
+                        layer.close(index);
+                    });
+                }
+            });
+            //监听行编辑事件
+            table.on('edit(bank)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+                console.log(obj.value); //得到修改后的值
+                console.log(obj.field); //当前编辑的字段名
+                console.log(obj.data); //所在行的所有相关数据
+            });
+
+            $("#addEmployee").click(function () {
 //             layer.open({
 //             type: 2,
 //             title: '员工添加',
@@ -139,10 +188,11 @@
 //             area: ['750px', '500px'],
 //             content: 'addemployee.html' //iframe的url
 //             });
-            window.location.href = 'addemployee.html';
-        })
-			});
-		</script>
+                window.location.href = 'addemployee.html?bankId='+bankId;
+            })
+        });
+    }
+</script>
 
-	</body>
+</body>
 </html>

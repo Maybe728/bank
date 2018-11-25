@@ -18,8 +18,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     EmployeeDao employeeDao;
     @Override
-    public List<Employee> queryEmployeeInfos() {
-        return employeeDao.queryEmployeeInfos();
+    public List<Employee> queryEmployeeInfos(Bank bank) {
+        return employeeDao.queryEmployeeInfos(bank);
     }
 
     /**

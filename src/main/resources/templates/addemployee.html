@@ -101,27 +101,24 @@
                 <input type="text" id="address" name="address" autocomplete="off" class="layui-input">
             </div>
         </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-form-item layui-form-text">
+    </div>    <div class="layui-form-item">
+        <div class="layui-inline">
             <label class="layui-form-label">特长</label>
-            <div class="layui-input-block">
-                <textarea id="specialty " lay-verify="specialty" placeholder="请输入内容" class="layui-textarea"></textarea>
+            <div class="layui-input-inline">
+                <input type="text" id="specialty" name="specialty" autocomplete="off" class="layui-input">
             </div>
-
         </div>
+    </div>
         <!--<div class="layui-form-item layui-form-text">
 <label class="layui-form-label">编辑器</label>
 <div class="layui-input-block">
 <textarea class="layui-textarea layui-hide" name="content" lay-verify="content" id="LAY_demo_editor"></textarea>
 </div>
 </div>-->
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <a class="layui-btn" id="submit">立即提交</a>
-                <button type="reset" class="layui-btn layui-btn-danger">重置</button>
-                <!-- <a class="layui-btn layui-btn-normal" target="_parent" href="editemployee.html">安全退出</a> -->
-            </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <a class="layui-btn" id="submit">立即提交</a>
+            <button type="reset" class="layui-btn layui-btn-danger">重置</button>
         </div>
     </div>
 </form>
@@ -182,6 +179,8 @@
             return false;
         });
         $("#submit").click(function () {
+            var url = location.search;
+            var bankId = url.split("=")[1];
             //数据录入数据库
             var employeeName = $("#employeeName").val();
             var employeeId = $("#employeeId").val();
@@ -204,6 +203,7 @@
             params.inCome=inCome;
             params.specialty=specialty;
             params.address=address;
+            params.bankId = bankId;
 
             $.ajax({
                 url:"/addEmployeeInfo",
@@ -216,7 +216,7 @@
                         icon: 1,
                         time: 1000 //1秒关闭（如果不配置，默认是3秒）
                     }, function () {
-                        window.location.href = 'editemployee.html';
+                        window.location.href = 'editemployee.html?bankId='+bankId;
                     });
                 },
                 error:function (data) {

@@ -173,14 +173,13 @@
             function MarkerClick(e) {
                 var p = e.target;
                 console.log(p);
-                alert("marker的位置是" + p.getLngLat().lng + "," + p.getLngLat().lat);
                 layer.open({
                     type: 2,
                     title: '员工信息',
                     shadeClose: true,
                     shade: 0.8,
                     area: ['750px', '500px'],
-                    content: 'editemployee.html' //iframe的url
+                    content: 'editemployee.html?lng='+p.getLngLat().lng+'&lat='+p.getLngLat().lat //iframe的url
                 })
             }
 			layui.use(['form', 'layedit'], function(){
