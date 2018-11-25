@@ -15,7 +15,7 @@
         <result column="employee_speciality" property="specialty"/>
         <result column="employee_income" property="inCome"/>
     </resultMap>
-    <select id="queryemployeeInfos" resultMap="employeeMap">
+    <select id="queryEmployeeInfos" resultMap="employeeMap">
         SELECT * FROM employee_info;
     </select>
     <insert id="addEmployeeInfo" useGeneratedKeys="true" keyProperty="id" parameterType="com.cn.bank.model.Bank">
