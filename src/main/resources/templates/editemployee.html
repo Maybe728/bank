@@ -45,13 +45,10 @@
                 type: "Post",
                 data: JSON.stringify(params),
                 success: function (data) {
-                    if (data.data().length>0){
+                    if (data.data.length>0){
                         bankId = data.data[0]["bankId"];
-                        showEmployee(bankId);
-                    } else{
-                        layer.msg("暂无数据！");
                     }
-
+                    showEmployee(bankId);
                 },
                 error: function (data) {
                     layer.msg("系统异常！");
@@ -74,7 +71,7 @@
                 url: '/getEmployeeInfos',
                 toolbar: '#toolbarDemo',
                 where: {bankId: bankId},
-                cellMinWidth: 80,
+                cellMinWidth: 100,
                 efaultToolbar: ['filter', 'exports'],
                 title: '员工信息',
                 cols: [
@@ -108,7 +105,7 @@
 // 							templet: function(res) {
 // 								return '<em>' + res.email + '</em>'
 // 							}
-                        field: 'emloyeeName',
+                        field: 'employeeName',
                         title: '员工名称',
                         edit: 'text'
                     }, {
@@ -122,23 +119,40 @@
                     }, {
                         field: 'workDate',
                         title: '工作时间',
-                        edit: 'text'
+                        edit: 'text',
+                        width: 130,
+                        templet: function(res) {
+                                console.log(res);
+								return res.workDate.substr(0,10);
+							}
                     }, {
                         field: 'inDate',
                         title: '调入时间',
-                        edit: 'text'
+                        edit: 'text',
+                        width: 130,
+                        templet: function(res) {
+                            console.log(res);
+                            return res.inDate.substr(0,10);
+                        }
                     }, {
                         field: 'outDate',
                         title: '调出时间',
-                        edit: 'text'
+                        edit: 'text',
+                        width: 130,
+                        templet: function(res) {
+                            console.log(res);
+                            return res.outDate.substr(0,10);
+                        }
                     }, {
                         field: 'address',
                         title: '家庭住址',
-                        edit: 'text'
+                        edit: 'text',
+                        width: 180
                     }, {
                         field: 'inDate',
                         title: '特长',
-                        edit: 'text'
+                        edit: 'text',
+                        width: 180
                     }, {
                         field: 'inCome',
                         title: '年收入',
@@ -146,7 +160,8 @@
                     }, {
                         fixed: 'right',
                         title: '操作',
-                        toolbar: '#barDemo'
+                        toolbar: '#barDemo',
+                        width: 120
                     }]
                 ],
                 page: true

@@ -180,6 +180,7 @@
         });
         $("#submit").click(function () {
             var url = location.search;
+            alert(url);
             var bankId = url.split("=")[1];
             //数据录入数据库
             var employeeName = $("#employeeName").val();
