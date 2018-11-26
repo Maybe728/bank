@@ -27,6 +27,10 @@
      
      页面获取content传过来的参数
      
+     var str = window.location.href;//获取到跳转后的地址，然后处理得到传过来的参数
+     
+     
+     
      
      
      
