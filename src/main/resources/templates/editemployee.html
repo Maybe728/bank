@@ -169,29 +169,52 @@
             //监听行工具事件
             table.on('tool(employee)', function (obj) {
                 var data = obj.data;
-                //console.log(obj)
+                console.log(obj);
+                var id = data.id;
+                var params={};
+                params.id = id;
                 if (obj.event === 'del') {
                     layer.confirm('真的删除行么', function (index) {
-                        obj.del();
-                        layer.close(index);
-                    });
-                } else if (obj.event === 'edit') {
-                    layer.prompt({
-                        formType: 2,
-                        value: data.email
-                    }, function (value, index) {
-                        obj.update({
-                            email: value
-                        });
-                        layer.close(index);
+
+                        $.ajax({
+                            url:"/delEmployeeInfo",
+                            contentType:'application/json; charset=UTF-8',
+                            dataType: 'json',
+                            type:"Post",
+                            data:JSON.stringify(params),
+                            success:function (data) {
+                                obj.del();
+                                layer.msg(data.msg,{icon: 5,time:1000});
+                            },
+                            error:function (data) {
+                                layer.msg(data.msg,{icon: 5,time:1000});
+                            }
+                        })
                     });
                 }
             });
             //监听行编辑事件
             table.on('edit(employee)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
-                console.log(obj.value); //得到修改后的值
-                console.log(obj.field); //当前编辑的字段名
-                console.log(obj.data); //所在行的所有相关数据
+                var value=obj.value;
+                var field=obj.field;
+                var id = obj.data.id;
+                var params={};
+                params.value=value;
+                params.field=field;
+                params.id=id;
+                console.log(obj);
+                $.ajax({
+                    url:"/editEmployeeInfo",
+                    contentType:'application/json; charset=UTF-8',
+                    dataType: 'json',
+                    type:"Post",
+                    data:JSON.stringify(params),
+                    success:function (data) {
+                    },
+                    error:function (data) {
+                        layer.msg("更新员工信息失败！");
+                    }
+                })
             });
 
             $("#addEmployee").click(function () {
