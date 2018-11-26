@@ -14,5 +14,15 @@
                                        ,classpath:/templates/
 
 
-
+   2.layui.open页面跳转传参的问题
+    layer.open({
+        type: 2,
+        title: '员工信息',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['750px', '500px'],
+        content: 'editemployee.html?lng='+p.getLngLat().lng+'&lat='+p.getLngLat().lat //iframe的url
+     })
+     
+     
 
