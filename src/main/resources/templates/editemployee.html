@@ -12,7 +12,7 @@
 <body>
 
 <div style="width: 94%;margin-left: 3%;">
-    <table class="layui-hide" id="bank" lay-filter="bank"></table>
+    <table class="layui-hide" id="employee" lay-filter="employee"></table>
 </div>
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
@@ -67,7 +67,7 @@
                 $ = layui.$; //重点处
 
             table.render({
-                elem: '#bank',
+                elem: '#employee',
                 url: '/getEmployeeInfos',
                 toolbar: '#toolbarDemo',
                 where: {bankId: bankId},
@@ -167,7 +167,7 @@
                 page: true
             });
             //监听行工具事件
-            table.on('tool(bank)', function (obj) {
+            table.on('tool(employee)', function (obj) {
                 var data = obj.data;
                 //console.log(obj)
                 if (obj.event === 'del') {
@@ -188,7 +188,7 @@
                 }
             });
             //监听行编辑事件
-            table.on('edit(bank)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+            table.on('edit(employee)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
                 console.log(obj.value); //得到修改后的值
                 console.log(obj.field); //当前编辑的字段名
                 console.log(obj.data); //所在行的所有相关数据
