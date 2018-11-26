@@ -1,4 +1,4 @@
-1.项目采用  springboot+springMvc+mybatis构建
+1.项目采用  springboot+springMvc+mybatis+layui+jquery构建
 
 <h3>2.项目开发中问题总结：</h3>
     1.静态文件根路径配置
