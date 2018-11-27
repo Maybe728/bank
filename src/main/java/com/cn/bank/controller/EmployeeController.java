@@ -48,23 +48,22 @@ public class EmployeeController {
     public TempletResult addEmployeeInfo(@RequestBody JSONObject params,HttpServletRequest request) throws ParseException {
         TempletResult result = new TempletResult();
         Employee employee = new Employee();
-        employee.setBankId(params.getAsString("bankId"));
+        employee.setEmployeeBankId(params.getAsString("bankId"));
         employee.setEmployeeId(params.getAsString("employeeId"));
         employee.setEmployeeName(params.getAsString("employeeName"));
-        employee.setIdentity(params.getAsString("identity"));
-        employee.setRole(params.getAsString("role"));
-        employee.setInCome(params.getAsString("inCome"));
-        employee.setSpecialty(params.getAsString("specialty"));
-        employee.setBankId(params.getAsString("bankId"));
-        employee.setAddress(params.getAsString("address"));
+        employee.setEmployeeIdentity(params.getAsString("identity"));
+        employee.setEmployeeRole(params.getAsString("role"));
+        employee.setEmployeeInCome(params.getAsString("inCome"));
+        employee.setEmployeeSpecialty(params.getAsString("specialty"));
+        employee.setEmployeeAddress(params.getAsString("address"));
         String inDate = params.getAsString("inDate");
         String outDate = params.getAsString("outDate");
         String workDate = params.getAsString("workDate");
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        employee.setInDate(sdf.parse(inDate));
-        employee.setWorkDate(sdf.parse(workDate));
-        employee.setOutDate(sdf.parse(outDate));
+        employee.setEmployeeInDate(sdf.parse(inDate));
+        employee.setEmployeeWorkDate(sdf.parse(workDate));
+        employee.setEmployeeOutDate(sdf.parse(outDate));
         try {
             employeeService.addEmployeeInfo(employee);
             result.setCode(employee.getId());

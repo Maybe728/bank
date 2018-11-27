@@ -5,87 +5,16 @@ import java.util.Date;
 public class Employee {
     private int id;
     private String employeeId;
-    private String bankId;
+    private String employeeBankId;
     private String employeeName;
-    private String identity;
-    private String role;
-    private String inCome;
-    private String specialty;
-    private Date inDate;
-    private Date outDate;
-    private Date workDate;
-    private String address;
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getEmployeeName() {
-        return employeeName;
-    }
-
-    public void setEmployeeName(String employeeName) {
-        this.employeeName = employeeName;
-    }
-
-    public String getIdentity() {
-        return identity;
-    }
-
-    public void setIdentity(String identity) {
-        this.identity = identity;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getInCome() {
-        return inCome;
-    }
-
-    public void setInCome(String inCome) {
-        this.inCome = inCome;
-    }
-
-    public String getSpecialty() {
-        return specialty;
-    }
-
-    public void setSpecialty(String specialty) {
-        this.specialty = specialty;
-    }
-
-    public Date getInDate() {
-        return inDate;
-    }
-
-    public void setInDate(Date inDate) {
-        this.inDate = inDate;
-    }
-
-    public Date getOutDate() {
-        return outDate;
-    }
-
-    public void setOutDate(Date outDate) {
-        this.outDate = outDate;
-    }
-
-    public Date getWorkDate() {
-        return workDate;
-    }
-
-    public void setWorkDate(Date workDate) {
-        this.workDate = workDate;
-    }
+    private String employeeIdentity;
+    private String employeeRole;
+    private String employeeInCome;
+    private String employeeSpecialty;
+    private Date employeeInDate;
+    private Date employeeOutDate;
+    private Date employeeWorkDate;
+    private String employeeAddress;
 
     public int getId() {
         return id;
@@ -103,12 +32,84 @@ public class Employee {
         this.employeeId = employeeId;
     }
 
-    public String getBankId() {
-        return bankId;
+    public String getEmployeeBankId() {
+        return employeeBankId;
     }
 
-    public void setBankId(String bankId) {
-        this.bankId = bankId;
+    public void setEmployeeBankId(String employeeBankId) {
+        this.employeeBankId = employeeBankId;
+    }
+
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
+    }
+
+    public String getEmployeeIdentity() {
+        return employeeIdentity;
+    }
+
+    public void setEmployeeIdentity(String employeeIdentity) {
+        this.employeeIdentity = employeeIdentity;
+    }
+
+    public String getEmployeeRole() {
+        return employeeRole;
+    }
+
+    public void setEmployeeRole(String employeeRole) {
+        this.employeeRole = employeeRole;
+    }
+
+    public String getEmployeeInCome() {
+        return employeeInCome;
+    }
+
+    public void setEmployeeInCome(String employeeInCome) {
+        this.employeeInCome = employeeInCome;
+    }
+
+    public String getEmployeeSpecialty() {
+        return employeeSpecialty;
+    }
+
+    public void setEmployeeSpecialty(String employeeSpecialty) {
+        this.employeeSpecialty = employeeSpecialty;
+    }
+
+    public Date getEmployeeInDate() {
+        return employeeInDate;
+    }
+
+    public void setEmployeeInDate(Date employeeInDate) {
+        this.employeeInDate = employeeInDate;
+    }
+
+    public Date getEmployeeOutDate() {
+        return employeeOutDate;
+    }
+
+    public void setEmployeeOutDate(Date employeeOutDate) {
+        this.employeeOutDate = employeeOutDate;
+    }
+
+    public Date getEmployeeWorkDate() {
+        return employeeWorkDate;
+    }
+
+    public void setEmployeeWorkDate(Date employeeWorkDate) {
+        this.employeeWorkDate = employeeWorkDate;
+    }
+
+    public String getEmployeeAddress() {
+        return employeeAddress;
+    }
+
+    public void setEmployeeAddress(String employeeAddress) {
+        this.employeeAddress = employeeAddress;
     }
 
     @Override
@@ -116,16 +117,16 @@ public class Employee {
         return "Employee{" +
                 "id=" + id +
                 ", employeeId='" + employeeId + '\'' +
-                ", bankId='" + bankId + '\'' +
+                ", employeeBankId='" + employeeBankId + '\'' +
                 ", employeeName='" + employeeName + '\'' +
-                ", identity='" + identity + '\'' +
-                ", role='" + role + '\'' +
-                ", inCome='" + inCome + '\'' +
-                ", specialty='" + specialty + '\'' +
-                ", inDate=" + inDate +
-                ", outDate=" + outDate +
-                ", workDate=" + workDate +
-                ", address='" + address + '\'' +
+                ", employeeIdentity='" + employeeIdentity + '\'' +
+                ", employeeRole='" + employeeRole + '\'' +
+                ", employeeInCome='" + employeeInCome + '\'' +
+                ", employeeSpecialty='" + employeeSpecialty + '\'' +
+                ", employeeInDate=" + employeeInDate +
+                ", employeeOutDate=" + employeeOutDate +
+                ", employeeWorkDate=" + employeeWorkDate +
+                ", employeeAddress='" + employeeAddress + '\'' +
                 '}';
     }
 }

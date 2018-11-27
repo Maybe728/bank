@@ -21,7 +21,6 @@
 </script>
 
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script type="text/javascript" src="layui/layui.all.js"></script>
@@ -94,7 +93,7 @@
 // 							templet: function(res) {
 // 								return '<em>' + res.email + '</em>'
 // 							}
-                        field: 'bankId',
+                        field: 'employeeBankId',
                         title: '机构号',
                         edit: 'text'
                     }, {
@@ -109,52 +108,52 @@
                         title: '员工名称',
                         edit: 'text'
                     }, {
-                        field: 'role',
+                        field: 'employeeRole',
                         title: '职务',
                         edit: 'text'
                     }, {
-                        field: 'identity',
+                        field: 'employeeIdentity',
                         title: '身份证',
                         edit: 'text'
                     }, {
-                        field: 'workDate',
+                        field: 'employeeWorkDate',
                         title: '工作时间',
-                        edit: 'text',
+                        //edit: 'text',
                         width: 130,
                         templet: function(res) {
                                 console.log(res);
-								return res.workDate.substr(0,10);
+								return res.employeeWorkDate.substr(0,10);
 							}
                     }, {
-                        field: 'inDate',
+                        field: 'employeeInDate',
                         title: '调入时间',
-                        edit: 'text',
+                        //edit: 'text',
                         width: 130,
                         templet: function(res) {
                             console.log(res);
-                            return res.inDate.substr(0,10);
+                            return res.employeeInDate.substr(0,10);
                         }
                     }, {
-                        field: 'outDate',
+                        field: 'employeeOutDate',
                         title: '调出时间',
-                        edit: 'text',
+                        //edit: 'text',
                         width: 130,
                         templet: function(res) {
                             console.log(res);
-                            return res.outDate.substr(0,10);
+                            return res.employeeOutDate.substr(0,10);
                         }
                     }, {
-                        field: 'address',
+                        field: 'employeeAddress',
                         title: '家庭住址',
                         edit: 'text',
                         width: 180
                     }, {
-                        field: 'inDate',
+                        field: 'employeeSpecialty',
                         title: '特长',
                         edit: 'text',
                         width: 180
                     }, {
-                        field: 'inCome',
+                        field: 'employeeInCome',
                         title: '年收入',
                         edit: 'text'
                     }, {
@@ -175,7 +174,6 @@
                 params.id = id;
                 if (obj.event === 'del') {
                     layer.confirm('真的删除行么', function (index) {
-
                         $.ajax({
                             url:"/delEmployeeInfo",
                             contentType:'application/json; charset=UTF-8',
