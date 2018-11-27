@@ -142,12 +142,14 @@
 			}
 			function searchResult(result){
                 console.log(result.getLocationPoint());
+                //var pointArray = new Array();
                 if(result.getStatus() == 0){
                     //更新银行经纬度
                     var params={};
                     params.id=id;
                     params.bankLongitude = result.getLocationPoint().lng;
                     params.bankLatitude = result.getLocationPoint().lat;
+                    //pointArray.push(new T.LngLat(result.getLocationPoint().lng, result.getLocationPoint().lat));
                     if (id!=0){
                         $.ajax({
                             url:"/updateBankInfo",
@@ -198,6 +200,8 @@
                             layer.msg("系统异常！");
                         }
                     })
+                    //让所有点在视野范围内
+                    //map.setViewport(pointArray);
 				}else{
 					layer.msg('该地址不存在', {icon: 5});
 				}
