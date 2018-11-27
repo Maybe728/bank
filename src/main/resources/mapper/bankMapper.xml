@@ -8,9 +8,23 @@
         <result column="bank_address" property="bankAddress"/>
         <result column="bank_longitude" property="bankLongitude"/>
         <result column="bank_latitude" property="bankLatitude"/>
+        <result column="employee_bankId" property="employeeBankId"/>
     </resultMap>
     <select id="queryBankInfos" resultMap="bankMap">
-        SELECT * FROM bank_info;
+        SELECT t.* from bank_info t;
+    </select>
+    <select id="queryExpectionBankByLatAndLng" parameterType="com.cn.bank.model.Bank"  resultMap="bankMap">
+        SELECT
+        t.*,
+        t1.employee_bankId
+        FROM
+        bank_info t,
+        employee_info t1
+        WHERE
+        t.bank_id = t1.employee_bankId
+        AND t.bank_latitude = #{bankLatitude}
+        AND t.bank_longitude = #{bankLongitude}
+        AND datediff( t1.employee_outDate, NOW( ) ) <![CDATA[ < ]]> 30
     </select>
     <select id="queryBankInfoByLatAndLng" parameterType="com.cn.bank.model.Bank" resultMap="bankMap">
         SELECT * FROM bank_info where bank_longitude = #{bankLongitude} and bank_latitude = #{bankLatitude};

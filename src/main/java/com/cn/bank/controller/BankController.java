@@ -63,6 +63,27 @@ public class BankController {
             result.setMsg("失败");
         }
         return result;
+    }@RequestMapping("/queryExpectionBankByLatAndLng")
+    public TempletResult queryExpectionBankByLatAndLng(@RequestBody JSONObject params){
+        TempletResult result = new TempletResult();
+        Bank bank = new Bank();
+        bank.setBankLatitude(params.getAsString("bankLatitude"));
+        bank.setBankLongitude(params.getAsString("bankLongitude"));
+        List<Bank> banks = new ArrayList<Bank>();
+        try{
+            banks = bankService.queryExpectionBankByLatAndLng(bank);
+            result.setData(banks);
+            result.setCount(banks.size());
+            result.setCode(0);
+            result.setMsg("success");
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setData(banks);
+            result.setCount(0);
+            result.setCode(1);
+            result.setMsg("error");
+        }
+        return result;
     }
 
     @RequestMapping(value="/addBankInfo",method=RequestMethod.POST,produces="application/json; charset=UTF-8")

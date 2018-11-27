@@ -11,6 +11,15 @@ public class Bank implements Serializable {
     private String bankAddress;
     private String bankLongitude;
     private String bankLatitude;
+    private String employeeBankId;
+
+    public String getEmployeeBankId() {
+        return employeeBankId;
+    }
+
+    public void setEmployeeBankId(String employeeBankId) {
+        this.employeeBankId = employeeBankId;
+    }
 
     public String getBankName() {
         return bankName;
@@ -69,6 +78,7 @@ public class Bank implements Serializable {
                 ", bankAddress='" + bankAddress + '\'' +
                 ", bankLongitude='" + bankLongitude + '\'' +
                 ", bankLatitude='" + bankLatitude + '\'' +
+                ", employeeBankId='" + employeeBankId + '\'' +
                 '}';
     }
 }

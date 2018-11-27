@@ -17,6 +17,12 @@ public interface BankDao {
     List<Bank> queryBankInfos();
 
     /**
+     * 根据经纬度查询异常银行的信息
+     * @return
+     */
+    List<Bank> queryExpectionBankByLatAndLng(Bank bank);
+
+    /**
      * 根据经纬度查询银行信息
      * @return
      */

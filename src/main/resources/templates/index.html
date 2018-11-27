@@ -33,11 +33,17 @@
 			var zoom = 11;
 			var geocoder;
 			var id=0;
+			var employeeBankId=[];
 			var icon1 = new T.Icon({
                 iconUrl: "img/maker3.png",
                 iconSize: new T.Point(29, 37),
                 iconAnchor: new T.Point(30, 25)
 			});
+            var icon2 = new T.Icon({
+                iconUrl: "img/maker2.png",
+                iconSize: new T.Point(29, 37),
+                iconAnchor: new T.Point(30, 25)
+            });
 			function onLoad(){ 
 				//初始化地图对象
 				map=new T.Map("mapDiv");
@@ -57,13 +63,14 @@
 				//获取以记录的银行地址,添加标注,并且给标注注册点击事件
 				$.ajax({
 					url:"/getBankInfos",
+                    //async : true,
 					type:"GET",
 					success:function (data) {
 						console.log(data.data);
 						var obj = data.data;
 						var len = obj.length;
                         for (var i = 0; i < len; i++) {
-							geocoder.getPoint(obj[i]["bankAddress"], searchResult);
+                            geocoder.getPoint(obj[i]["bankAddress"], searchResult);
                         }
                     },
 					error:function (data) {
@@ -134,15 +141,14 @@
 				});
 			}
 			function searchResult(result){
-				console.log(result.getLocationPoint());
-
+                console.log(result.getLocationPoint());
                 if(result.getStatus() == 0){
+                    //更新银行经纬度
+                    var params={};
+                    params.id=id;
+                    params.bankLongitude = result.getLocationPoint().lng;
+                    params.bankLatitude = result.getLocationPoint().lat;
                     if (id!=0){
-                        var params={};
-                        params.id=id;
-                        params.bankLongitude = result.getLocationPoint().lng;
-                        params.bankLatitude = result.getLocationPoint().lat;
-						console.log(params);
                         $.ajax({
                             url:"/updateBankInfo",
                             contentType:'application/json; charset=UTF-8',
@@ -155,17 +161,43 @@
                                 layer.msg("系统异常！");
                             }
                         })
-					}
 
-				    //更新银行经纬度
-					map.panTo(result.getLocationPoint(), zoom);
-					//创建标注对象
-					var marker = new T.Marker(result.getLocationPoint(), {icon: icon1});
-					//向地图上添加标注
-					map.addOverLay(marker);
-                    //给标注注册点击事件(先remove防止多次注册)
-                    marker.removeEventListener("click", MarkerClick);
-                    marker.addEventListener("click", MarkerClick);
+					}
+                    $.ajax({
+                        url:"/queryExpectionBankByLatAndLng",
+                        contentType:'application/json; charset=UTF-8',
+                        dataType: 'json',
+                        type:"Post",
+                        data:JSON.stringify(params),
+                        success:function (data) {
+                            //判断employeeBankId是否为空，为空说明该银行内没有员工超过工作期限
+                            var icon =null;
+							if (data.data.length==0){
+                                icon = new T.Icon({
+                                    iconUrl: "img/maker3.png",
+                                    iconSize: new T.Point(29, 37),
+                                    iconAnchor: new T.Point(30, 25)
+                                });
+                            } else {
+                                icon = new T.Icon({
+                                    iconUrl: "img/maker2.png",
+                                    iconSize: new T.Point(29, 37),
+                                    iconAnchor: new T.Point(30, 25)
+                                });
+                            }
+                            map.panTo(result.getLocationPoint(), zoom);
+                            //创建标注对象
+                            var marker = new T.Marker(result.getLocationPoint(), {icon: icon});
+                            //向地图上添加标注
+                            map.addOverLay(marker);
+                            //给标注注册点击事件(先remove防止多次注册)
+                            marker.removeEventListener("click", MarkerClick);
+                            marker.addEventListener("click", MarkerClick);
+                        },
+                        error:function (data) {
+                            layer.msg("系统异常！");
+                        }
+                    })
 				}else{
 					layer.msg('该地址不存在', {icon: 5});
 				}
@@ -179,7 +211,15 @@
                     shadeClose: true,
                     shade: 0.8,
                     area: ['750px', '500px'],
-                    content: 'editemployee.html?lng='+p.getLngLat().lng+'&lat='+p.getLngLat().lat //iframe的url
+                    content: 'editemployee.html?lng='+p.getLngLat().lng+'&lat='+p.getLngLat().lat, //iframe的url
+                    end: function(index, layero){
+						window.location.href = 'index.html';
+                        return false;
+                    },
+                    cancel: function(index, layeo){
+                        window.location.href = 'index.html';
+                        return false;
+                    }
                 })
             }
 			layui.use(['form', 'layedit'], function(){

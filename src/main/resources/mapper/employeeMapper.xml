@@ -4,26 +4,26 @@
     <resultMap id="employeeMap" type="com.cn.bank.model.Employee">
         <result column="id" property="id"/>
         <result column="employee_id" property="employeeId"/>
-        <result column="bank_id" property="bankId"/>
+        <result column="employee_bankId" property="employeeBankId"/>
         <result column="employee_name" property="employeeName"/>
-        <result column="employee_duties" property="role"/>
-        <result column="employee_id_card" property="identity"/>
-        <result column="employee_work_date" property="workDate"/>
-        <result column="employee_move_date" property="inDate"/>
-        <result column="employee_work_deadlines" property="outDate"/>
-        <result column="employee_address" property="address"/>
-        <result column="employee_speciality" property="specialty"/>
-        <result column="employee_income" property="inCome"/>
+        <result column="employee_role" property="employeeRole"/>
+        <result column="employee_identity" property="employeeIdentity"/>
+        <result column="employee_workDate" property="employeeWorkDate"/>
+        <result column="employee_inDate" property="employeeInDate"/>
+        <result column="employee_outDate" property="employeeOutDate"/>
+        <result column="employee_address" property="employeeAddress"/>
+        <result column="employee_speciality" property="employeeSpecialty"/>
+        <result column="employee_inCome" property="employeeInCome"/>
     </resultMap>
     <select id="queryEmployeeInfos" parameterType="com.cn.bank.model.Bank" resultMap="employeeMap">
-        SELECT * FROM employee_info where bank_id = #{bankId};
+        SELECT * FROM employee_info where employee_bankId = #{bankId};
     </select>
     <insert id="addEmployeeInfo" useGeneratedKeys="true" keyProperty="id" parameterType="com.cn.bank.model.Employee">
-      insert into employee_info(employee_id,bank_id,employee_name,employee_duties,employee_id_card
-                            ,employee_work_date,employee_move_date,employee_work_deadlines,employee_address
-                            ,employee_speciality,employee_income)
-      values(#{employeeId},#{bankId},#{employeeName},#{role},#{identity},
-            #{workDate},#{inDate},#{outDate},#{address},#{specialty},#{inCome})
+      insert into employee_info(employee_id,employee_bankId,employee_name,employee_role,employee_identity
+                            ,employee_workDate,employee_inDate,employee_outDate,employee_address
+                            ,employee_speciality,employee_inCome)
+      values(#{employeeId},#{employeeBankId},#{employeeName},#{employeeRole},#{employeeIdentity},
+            #{employeeWorkDate},#{employeeInDate},#{employeeOutDate},#{employeeAddress},#{employeeSpecialty},#{employeeInCome})
     </insert>
     <update id="editEmployeeInfo" parameterType="com.cn.bank.model.UpdateEmployeeInfo">
       update employee_info set ${filed}=#{value} where id=#{id}
