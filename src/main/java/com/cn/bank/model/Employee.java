@@ -1,8 +1,10 @@
 package com.cn.bank.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Employee {
+public class Employee implements Serializable {
+    private static final long serialVersionUID = 8766005917348394590L;
     private int id;
     private String employeeId;
     private String bankId;

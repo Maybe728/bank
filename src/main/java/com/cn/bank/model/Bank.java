@@ -1,6 +1,10 @@
 package com.cn.bank.model;
 
-public class Bank {
+import java.io.Serializable;
+
+public class Bank implements Serializable {
+
+    private static final long serialVersionUID = 4695125176387802456L;
     private int id;
     private String bankName;
     private String bankId;
