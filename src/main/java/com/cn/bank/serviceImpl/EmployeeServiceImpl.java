@@ -11,6 +11,7 @@ import com.cn.bank.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Component
@@ -18,8 +19,23 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     EmployeeDao employeeDao;
     @Override
-    public List<Employee> queryEmployeeInfos(Bank bank) {
-        return employeeDao.queryEmployeeInfos(bank);
+    public List<Employee> queryEmployeeInfos(String bankId,int page,int limit) {
+        HashMap<String,Object> map = new HashMap<String,Object>();
+        map.put("bankId",bankId);
+        map.put("page",(page-1)*limit);
+        map.put("limit",limit);
+        return employeeDao.queryEmployeeInfos(map);
+    }
+
+    /**
+     * 获取指定银行的员工总数
+     *
+     * @param bankId
+     * @return
+     */
+    @Override
+    public int queryEmployeeInfosCount(String bankId) {
+        return employeeDao.queryEmployeeInfosCount(bankId);
     }
 
     /**

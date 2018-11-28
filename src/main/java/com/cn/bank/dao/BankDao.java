@@ -5,16 +5,23 @@ import com.cn.bank.model.UpdateBankInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Mapper
 @Repository
 public interface BankDao {
+
+    /**
+     * 获取银行信息的总数
+     * @return
+     */
+    int queryBankInfosCount();
     /**
      * 查询所有银行的信息
      * @return
      */
-    List<Bank> queryBankInfos();
+    List<Bank> queryBankInfos(HashMap<String,Object> map);
 
     /**
      * 根据经纬度查询异常银行的信息

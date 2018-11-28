@@ -7,10 +7,15 @@ import java.util.List;
 
 public interface BankService {
     /**
+     * 获取银行信息的总数
+     * @return
+     */
+    int queryBankInfosCount();
+    /**
      * 查询所有的银行信息
      * @return
      */
-    List<Bank>  queryBankInfos();
+    List<Bank>  queryBankInfos(int page,int limit);
 
     /**
      * 根据经纬度查询异常银行的信息

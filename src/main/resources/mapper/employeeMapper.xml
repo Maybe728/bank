@@ -15,8 +15,16 @@
         <result column="employee_speciality" property="employeeSpecialty"/>
         <result column="employee_inCome" property="employeeInCome"/>
     </resultMap>
-    <select id="queryEmployeeInfos" parameterType="com.cn.bank.model.Bank" resultMap="employeeMap">
-        SELECT * FROM employee_info where employee_bankId = #{bankId};
+    <select id="queryEmployeeInfosCount"  parameterType="string" resultType="int">
+        SELECT Count(*) FROM employee_info where employee_bankId = #{bankId};
+    </select>
+    <select id="queryEmployeeInfos" parameterType="map" resultMap="employeeMap">
+        SELECT *
+          FROM employee_info
+         where employee_bankId = #{bankId}
+         <if test="limit != 0">
+             limit #{page},#{limit}
+         </if>
     </select>
     <insert id="addEmployeeInfo" useGeneratedKeys="true" keyProperty="id" parameterType="com.cn.bank.model.Employee">
       insert into employee_info(employee_id,employee_bankId,employee_name,employee_role,employee_identity

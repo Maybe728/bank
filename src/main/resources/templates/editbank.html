@@ -35,6 +35,8 @@
 					url: '/getBankInfos',
 					toolbar: '#toolbarDemo',
           			defaultToolbar: ['filter', 'exports'],
+					limit:10,//默认10
+                    limits:[10,20,50],
 					title: '行社信息',
 					cols: [
 						[{
@@ -74,7 +76,7 @@
 							width: 80
 						}]
 					],
-					page: false
+					page: true
 				});
 				//监听行工具事件
 				table.on('tool(bank)', function(obj) {

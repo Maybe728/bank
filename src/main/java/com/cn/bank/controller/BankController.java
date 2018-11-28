@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -26,13 +28,22 @@ public class BankController {
     }
 
     @RequestMapping("/getBankInfos")
-    public TempletResult getBankInfos(){
+    public TempletResult getBankInfos(HttpServletRequest request){
         TempletResult result = new TempletResult();
         List<Bank> banks = new ArrayList<Bank>();
         try{
-            banks = bankService.queryBankInfos();
+            int count =bankService.queryBankInfosCount();
+            int page = 0;
+            int limit = 0;
+            if (request.getParameter("page") == null){
+
+            }else{
+                 page =  Integer.valueOf(request.getParameter("page"));
+                 limit = Integer.valueOf(request.getParameter("limit"));
+            }
+            banks = bankService.queryBankInfos(page,limit);
             result.setData(banks);
-            result.setCount(banks.size());
+            result.setCount(count);
             result.setCode(0);
             result.setMsg("success");
         }catch (Exception e){

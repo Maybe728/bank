@@ -8,15 +8,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Component
 public class BankServiceImpl  implements BankService {
     @Autowired
     BankDao bankDao;
+
     @Override
-    public List<Bank> queryBankInfos() {
-        return bankDao.queryBankInfos();
+    public int queryBankInfosCount() {
+        return bankDao.queryBankInfosCount();
+    }
+
+    @Override
+    public List<Bank> queryBankInfos(int page,int limit) {
+        HashMap<String,Object> map = new HashMap<String,Object>();
+        map.put("page",(page-1)*limit);
+        map.put("limit",limit);
+        return bankDao.queryBankInfos(map);
     }
 
     /**

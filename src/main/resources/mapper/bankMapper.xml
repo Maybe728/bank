@@ -10,8 +10,16 @@
         <result column="bank_latitude" property="bankLatitude"/>
         <result column="employee_bankId" property="employeeBankId"/>
     </resultMap>
-    <select id="queryBankInfos" resultMap="bankMap">
-        SELECT t.* from bank_info t;
+    <select id="queryBankInfosCount"  resultType="int">
+        SELECT count(*)
+        from bank_info t
+    </select>
+    <select id="queryBankInfos" parameterType="map" resultMap="bankMap">
+        SELECT t.*
+          from bank_info t
+          <if test="limit!=0">
+            limit #{page},#{limit}
+          </if>
     </select>
     <select id="queryExpectionBankByLatAndLng" parameterType="com.cn.bank.model.Bank"  resultMap="bankMap">
         SELECT

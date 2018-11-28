@@ -21,15 +21,19 @@ public class EmployeeController {
 
     @RequestMapping("/getEmployeeInfos")
     public TempletResult getEmployeeInfos(HttpServletRequest request){
-
         TempletResult result = new TempletResult();
-        Map<String,String[]> map = request.getParameterMap();
-        String bankId = map.get("bankId")[0];
-        Bank bank = new Bank();
-        bank.setBankId(bankId);
+        String bankId = request.getParameter("bankId");
         List<Employee> employees = new ArrayList<Employee>();
         try{
-            employees = employeeService.queryEmployeeInfos(bank);
+            int page=0;
+            int limit=0;
+            if (request.getParameter("page")==null){
+
+            }else{
+                page = Integer.valueOf(request.getParameter("page"));
+                limit = Integer.valueOf(request.getParameter("limit"));
+            }
+            employees = employeeService.queryEmployeeInfos(bankId,page,limit);
             result.setData(employees);
             result.setCount(employees.size());
             result.setCode(0);
