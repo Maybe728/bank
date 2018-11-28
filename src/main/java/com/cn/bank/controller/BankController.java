@@ -5,6 +5,8 @@ import com.cn.bank.model.TempletResult;
 import com.cn.bank.model.UpdateBankInfo;
 import com.cn.bank.service.BankService;
 import net.minidev.json.JSONObject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -63,7 +65,9 @@ public class BankController {
             result.setMsg("失败");
         }
         return result;
-    }@RequestMapping("/queryExpectionBankByLatAndLng")
+    }
+
+    @RequestMapping("/queryExpectionBankByLatAndLng")
     public TempletResult queryExpectionBankByLatAndLng(@RequestBody JSONObject params){
         TempletResult result = new TempletResult();
         Bank bank = new Bank();
