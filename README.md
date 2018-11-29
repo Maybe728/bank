@@ -38,6 +38,9 @@
      应为StatefulRedisConnection是线程安全的，所以一个连接实例（StatefulRedisConnection）就可以满足多线程环境下的并发访问，
      当然这个也是可伸缩的设计，一个连接实例不够的情况也可以按需增加连接实例。
      
+     想在Java中连接Redis，并进行操作，由两种方式，一种是spring data redis，它是由spring集成的，不支持集群，
+     一种是官方推荐的jedis，支持集群，其他功能差不多一样.
+     
      
    4.连接阿里云mysql：
         

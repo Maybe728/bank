@@ -1,13 +1,16 @@
 package com.cn.bank.serviceImpl;
 
+import com.alibaba.fastjson.JSON;
 import com.cn.bank.dao.BankDao;
 import com.cn.bank.model.Bank;
 import com.cn.bank.model.UpdateBankInfo;
+import com.cn.bank.redis.RedisService;
 import com.cn.bank.service.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,6 +18,8 @@ import java.util.List;
 public class BankServiceImpl  implements BankService {
     @Autowired
     BankDao bankDao;
+    @Autowired
+    RedisService redisService;
 
     @Override
     public int queryBankInfosCount() {
@@ -23,10 +28,19 @@ public class BankServiceImpl  implements BankService {
 
     @Override
     public List<Bank> queryBankInfos(int page,int limit) {
-        HashMap<String,Object> map = new HashMap<String,Object>();
-        map.put("page",(page-1)*limit);
-        map.put("limit",limit);
-        return bankDao.queryBankInfos(map);
+        List<Bank> result = new ArrayList<>();
+        //if (!redisService.exists("queryBankInfos")){
+            HashMap<String,Object> map = new HashMap<String,Object>();
+            map.put("page",(page-1)*limit);
+            map.put("limit",limit);
+            result = bankDao.queryBankInfos(map);
+            //redisService.setObjectToJSON("queryBankInfos",result);
+            return result;
+//        }else {
+//            result = redisService.getJSONToObject(Bank.class,"queryBankInfos");
+//            return result;
+//        }
+
     }
 
     /**
