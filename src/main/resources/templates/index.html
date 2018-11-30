@@ -82,10 +82,11 @@
 			function showBankInfos(){
                 layer.open({
                   type: 2,
-                  title: '行社修改删除界面',
+                    skin: 'layui-layer-molv', //样式类名
+                    title: ['行社修改删除界面', 'font-size:18px;'],
                   shadeClose: true,
                   shade: 0.8,
-                  area: ['705px', '500px'],
+                  area: ['705px', '600px'],
                   content: 'editbank.html ' //iframe的url
                 });
 			}

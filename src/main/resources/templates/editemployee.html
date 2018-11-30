@@ -177,8 +177,10 @@
                 var data = obj.data;
                 console.log(obj);
                 var id = data.id;
+                var bankId = data.employeeBankId;
                 var params={};
                 params.id = id;
+                params.bankId = bankId;
                 if (obj.event === 'del') {
                     layer.confirm('真的删除行么', function (index) {
                         $.ajax({
@@ -203,10 +205,12 @@
                 var value=obj.value;
                 var field=obj.field;
                 var id = obj.data.id;
+                var bankId = obj.data.employeeBankId;
                 var params={};
                 params.value=value;
                 params.field=field;
                 params.id=id;
+                params.bankId = bankId;
                 console.log(obj);
                 $.ajax({
                     url:"/editEmployeeInfo",

@@ -4,6 +4,8 @@ import com.cn.bank.model.*;
 import com.cn.bank.service.EmployeeService;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +22,7 @@ public class EmployeeController {
     EmployeeService employeeService;
 
     @RequestMapping("/getEmployeeInfos")
+    //@Cacheable(cacheNames="bank", key="#root.targetClass+#request.getParameter('bankId')",unless="#result.code!=0")
     public TempletResult getEmployeeInfos(HttpServletRequest request){
         TempletResult result = new TempletResult();
         String bankId = request.getParameter("bankId");
@@ -49,6 +52,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value="/addEmployeeInfo",method=RequestMethod.POST,produces="application/json; charset=UTF-8")
+    //@CacheEvict(cacheNames="bank", key="#root.targetClass+#params.getAsString('bankId')")
     public TempletResult addEmployeeInfo(@RequestBody JSONObject params,HttpServletRequest request) throws ParseException {
         TempletResult result = new TempletResult();
         Employee employee = new Employee();
@@ -84,6 +88,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value="/editEmployeeInfo",method=RequestMethod.POST,produces="application/json; charset=UTF-8")
+    //@CacheEvict(cacheNames="bank", key="#root.targetClass+#params.getAsString('bankId')")
     public TempletResult editEmployeeInfo(@RequestBody JSONObject params){
         TempletResult result = new TempletResult();
         UpdateEmployeeInfo updateEmployeeInfo = new UpdateEmployeeInfo();
@@ -112,6 +117,7 @@ public class EmployeeController {
         return result;
     }
     @RequestMapping(value="/delEmployeeInfo",method=RequestMethod.POST,produces="application/json; charset=UTF-8")
+    //@CacheEvict(cacheNames="bank", key="#root.targetClass+#params.getAsString('bankId')")
     public TempletResult delEmployeeInfo(@RequestBody JSONObject params){
         TempletResult result = new TempletResult();
         UpdateEmployeeInfo updateEmployeeInfo = new UpdateEmployeeInfo();

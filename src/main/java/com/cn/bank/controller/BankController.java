@@ -29,7 +29,7 @@ public class BankController {
     }
 
     @RequestMapping("/getBankInfos")
-    @Cacheable(cacheNames="banks", key="getBankInfos")
+    //@Cacheable(cacheNames="bank", key="#root.targetClass+'banksInfo'",unless="#result.code!=0")
     public TempletResult getBankInfos(HttpServletRequest request){
         TempletResult result = new TempletResult();
         List<Bank> banks = new ArrayList<Bank>();
@@ -104,7 +104,7 @@ public class BankController {
     }
 
     @RequestMapping(value="/addBankInfo",method=RequestMethod.POST,produces="application/json; charset=UTF-8")
-    @CachePut(cacheNames="banks", key="getBankInfos")
+    //@CacheEvict(cacheNames="bank", key="#root.targetClass+'banksInfo'")
     public TempletResult addBankInfo(@RequestBody JSONObject params){
         TempletResult result = new TempletResult();
         Bank bank = new Bank();
@@ -127,7 +127,7 @@ public class BankController {
     }
 
     @RequestMapping(value="/editBankInfo",method=RequestMethod.POST,produces="application/json; charset=UTF-8")
-    @CachePut(cacheNames="banks", key="getBankInfos")
+    //@CacheEvict(cacheNames="bank", key="#root.targetClass+'banksInfo'")
     public TempletResult editBankInfo(@RequestBody JSONObject params){
         TempletResult result = new TempletResult();
         UpdateBankInfo updateBankInfo = new UpdateBankInfo();
@@ -156,7 +156,7 @@ public class BankController {
         return result;
     }
     @RequestMapping(value="/delBankInfo",method=RequestMethod.POST,produces="application/json; charset=UTF-8")
-    @CachePut(cacheNames="banks", key="getBankInfos",unless = "#result.code!=0")
+    //@CacheEvict(cacheNames="bank", key="#root.targetClass+'banksInfo'")
     public TempletResult delBankInfo(@RequestBody JSONObject params){
         TempletResult result = new TempletResult();
         UpdateBankInfo updateBankInfo = new UpdateBankInfo();
@@ -180,7 +180,7 @@ public class BankController {
         return result;
     }
     @RequestMapping(value="/updateBankInfo",method=RequestMethod.POST,produces="application/json; charset=UTF-8")
-    @CacheEvict(cacheNames="banks", key="getBankInfos")
+    //@CacheEvict(cacheNames="bank", key="#root.targetClass+'banksInfo'")
     public TempletResult updateBankInfo(@RequestBody JSONObject params){
         TempletResult result = new TempletResult();
 

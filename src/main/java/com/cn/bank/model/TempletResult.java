@@ -1,8 +1,14 @@
 package com.cn.bank.model;
 
+import com.fasterxml.jackson.databind.ser.std.StringSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
+
+import java.io.Serializable;
 import java.util.List;
 
-public class TempletResult {
+public class TempletResult implements Serializable {
+
+    private static final long serialVersionUID = 50379902003739270L;
     private String msg;
     private int code;
     private List<?> data;
