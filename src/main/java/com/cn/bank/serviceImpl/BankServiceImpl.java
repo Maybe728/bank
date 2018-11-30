@@ -29,17 +29,19 @@ public class BankServiceImpl  implements BankService {
     @Override
     public List<Bank> queryBankInfos(int page,int limit) {
         List<Bank> result = new ArrayList<>();
-        //if (!redisService.exists("queryBankInfos")){
+        String json = redisService.hget("queryBankInfos"+page,"banksInfo");
+        if (json==null){
             HashMap<String,Object> map = new HashMap<String,Object>();
             map.put("page",(page-1)*limit);
             map.put("limit",limit);
             result = bankDao.queryBankInfos(map);
-            //redisService.setObjectToJSON("queryBankInfos",result);
+            redisService.hset("queryBankInfos"+page,"banksInfo",JSON.toJSONString(result));
             return result;
-//        }else {
-//            result = redisService.getJSONToObject(Bank.class,"queryBankInfos");
-//            return result;
-//        }
+        }else {
+            //result = redisService.getJSONToObject(Bank.class,"queryBankInfos");
+            result=JSON.parseArray(json,Bank.class);
+            return result;
+        }
 
     }
 

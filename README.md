@@ -41,6 +41,10 @@
      想在Java中连接Redis，并进行操作，由两种方式，一种是spring data redis，它是由spring集成的，不支持集群，
      一种是官方推荐的jedis，支持集群，其他功能差不多一样.
      
+     ERR Client sent AUTH, but no password is set.
+     redis端没有设置密码，但是jedis像其发送了验证，设置下密码就好了。
+     CONFIG set requirepass “22222”
+     
      
    4.连接阿里云mysql：
         
