@@ -6,6 +6,7 @@ import com.cn.bank.model.Bank;
 import com.cn.bank.model.UpdateBankInfo;
 import com.cn.bank.redis.RedisService;
 import com.cn.bank.service.BankService;
+import com.cn.bank.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -28,18 +29,18 @@ public class BankServiceImpl  implements BankService {
 
     @Override
     public List<Bank> queryBankInfos(int page,int limit) {
-        List<Bank> result = new ArrayList<>();
+        List<Bank> result;
         String json = redisService.hget("queryBankInfos"+page,"banksInfo");
         if (json==null){
             HashMap<String,Object> map = new HashMap<String,Object>();
             map.put("page",(page-1)*limit);
             map.put("limit",limit);
             result = bankDao.queryBankInfos(map);
-            redisService.hset("queryBankInfos"+page,"banksInfo",JSON.toJSONString(result));
+            redisService.hset("queryBankInfos"+page,"banksInfo", JsonUtil.objectToJson(result));
             return result;
         }else {
             //result = redisService.getJSONToObject(Bank.class,"queryBankInfos");
-            result=JSON.parseArray(json,Bank.class);
+            result=JsonUtil.jsonToList(json,Bank.class);
             return result;
         }
 
